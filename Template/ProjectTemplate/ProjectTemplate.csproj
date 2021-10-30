@@ -1,0 +1,86 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net471</TargetFramework>
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <MonoGamePlatform>DesktopGL</MonoGamePlatform>
+    </PropertyGroup>
+    
+    <PropertyGroup>
+        <NezRoot>..\Nez</NezRoot>
+    </PropertyGroup>
+
+    <!-- project references -->
+    <ItemGroup>
+        <ProjectReference Include="..\FNA\FNA.csproj" />
+        <ProjectReference Include="..\Nez\Nez.ImGui\Nez.FNA.ImGui.csproj" />
+        <ProjectReference Include="..\Nez\Nez.Persistence\Nez.FNA.Persistence.csproj" />
+        <ProjectReference Include="..\Nez\Nez.Portable\Nez.FNA.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="System.Drawing.Common" Version="4.6.0" />
+    </ItemGroup>
+    
+    <ItemGroup>
+        <None Include="..\fnalibs\*\*.*">
+            <Visible>false</Visible>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="ContentPathGenerator.tt">
+          <Generator>TextTemplatingFileGenerator</Generator>
+          <LastGenOutput>ContentPathGenerator.cs</LastGenOutput>
+        </None>
+    </ItemGroup>
+    
+    <ItemGroup>
+        <Content Include="Content/**/*.*">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
+    
+    <ItemGroup>
+      <Compile Update="ContentPathGenerator.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>ContentPathGenerator.tt</DependentUpon>
+      </Compile>
+    </ItemGroup>
+    
+    <Target Name="CheckOutNez" BeforeTargets="BeforeBuild" Condition="!Exists('..\Nez\')">
+        <Message Importance="high" Text="Cloning Nez" />
+        <Exec Command="git clone https://github.com/prime31/Nez.git ../Nez" />
+        <PropertyGroup>
+            <RestoreNow>true</RestoreNow>
+        </PropertyGroup>
+    </Target>
+
+    <Target Name="CheckOutFna" BeforeTargets="BeforeBuild" Condition="!Exists('..\FNA\')">
+        <Message Importance="high" Text="Cloning FNA" />
+        <Exec Command="git clone git://github.com/FNA-XNA/FNA.git ../FNA" />
+        <PropertyGroup>
+            <RestoreNow>true</RestoreNow>
+        </PropertyGroup>
+    </Target>
+
+    <Target Name="CopyTemplateGenerator" BeforeTargets="BeforeBuild" Condition="!Exists('ContentPathGenerator.tt')">
+        <Message Importance="high" Text="Copy ContentPathGenerator.tt" />
+        <Copy SourceFiles="..\Nez\T4Templates\ContentPathGenerator.tt" DestinationFiles="ContentPathGenerator.tt" />
+    </Target>
+
+    <Target Name="DownloadFnalibs" BeforeTargets="BeforeBuild" Condition="!Exists('..\fnalibs\')">
+        <Message Importance="high" Text="Downloading fnalibs" />
+        <Exec Command="wget https://fna.flibitijibibo.com/archive/fnalibs.tar.bz2 -P .." />
+        <Exec Command="mkdir -p ../fnalibs" />
+        <Exec Command="tar xjC ../fnalibs -f ../fnalibs.tar.bz2" />
+        <Exec Command="rm ../fnalibs.tar.bz2" />
+    </Target>
+    
+    <Target Name="RestoreNow" BeforeTargets="BeforeBuild" Condition="'$(RestoreNow)' == 'true'">
+        <Message Importance="high" Text="Restoring now" />
+        <Exec Command="dotnet restore" />
+    </Target>
+    
+</Project>

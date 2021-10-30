@@ -1,0 +1,12 @@
+{
+  "$schema": "http://json.schemastore.org/launchsettings.json",
+  "profiles": {
+    "ProjectTemplate": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "DYLD_LIBRARY_PATH" : "./osx",
+        "LD_LIBRARY_PATH" : "./lib64"
+      }
+    }
+  }
+}
