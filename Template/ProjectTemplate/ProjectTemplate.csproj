@@ -48,6 +48,12 @@
         <DependentUpon>ContentPathGenerator.tt</DependentUpon>
       </Compile>
     </ItemGroup>
+
+    <PropertyGroup>
+        <IsWindows Condition="'$(OS)' == 'Windows_NT'">true</IsWindows>
+        <IsOSX Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::OSX)))' == 'true'">true</IsOSX>
+        <IsLinux Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))' == 'true'">true</IsLinux>
+    </PropertyGroup>
     
     <Target Name="CheckOutNez" BeforeTargets="BeforeBuild" Condition="!Exists('..\Nez\')">
         <Message Importance="high" Text="Cloning Nez" />
@@ -59,28 +65,42 @@
 
     <Target Name="CheckOutFna" BeforeTargets="BeforeBuild" Condition="!Exists('..\FNA\')">
         <Message Importance="high" Text="Cloning FNA" />
-        <Exec Command="git clone git://github.com/FNA-XNA/FNA.git ../FNA" />
+        <Exec Command="git clone --recursive git://github.com/FNA-XNA/FNA.git ../FNA" />
         <PropertyGroup>
             <RestoreNow>true</RestoreNow>
         </PropertyGroup>
     </Target>
 
-    <Target Name="CopyTemplateGenerator" BeforeTargets="BeforeBuild" Condition="!Exists('ContentPathGenerator.tt')">
-        <Message Importance="high" Text="Copy ContentPathGenerator.tt" />
-        <Copy SourceFiles="..\Nez\T4Templates\ContentPathGenerator.tt" DestinationFiles="ContentPathGenerator.tt" />
-    </Target>
-
-    <Target Name="DownloadFnalibs" BeforeTargets="BeforeBuild" Condition="!Exists('..\fnalibs\')">
+    <Target Name="DownloadFnalibs" BeforeTargets="BeforeBuild" Condition="!Exists('..\fnalibs\') AND '$(IsLinux)' == 'true'">
         <Message Importance="high" Text="Downloading fnalibs" />
         <Exec Command="wget https://fna.flibitijibibo.com/archive/fnalibs.tar.bz2 -P .." />
         <Exec Command="mkdir -p ../fnalibs" />
         <Exec Command="tar xjC ../fnalibs -f ../fnalibs.tar.bz2" />
         <Exec Command="rm ../fnalibs.tar.bz2" />
     </Target>
+
+    <Target Name="DownloadFnalibs_Win" BeforeTargets="BeforeBuild" Condition="!Exists('..\fnalibs\') AND '$(IsWindows)' == 'true'">
+        <Message Importance="high" Text="Downloading fnalibs" />
+        <Exec Command='powershell -Command "Invoke-WebRequest https://fna.flibitijibibo.com/archive/fnalibs.tar.bz2 -OutFile ../fnalibs.tar.bz2' />
+        <Exec Command="mkdir ../fnalibs" />
+
+        <Error Condition="!Exists('C:\Program Files\7-Zip\7z.exe')"
+               Text="Unable to extract fnalibs.tar.bz2: 'C:\Program Files\7-Zip\7z.exe' not found."/>
+        
+        <Exec Command='C:\Program Files\7-Zip\7z.exe" x "../fnalibs.tar.bz2"' />
+        <Exec Command='C:\Program Files\7-Zip\7z.exe" x "../fnalibs.tar" -o ../fnalibs' />
+        <Exec Command="rm ../fnalibs.tar.bz2" />
+        <Exec Command="rm ../fnalibs.tar" />
+    </Target>
     
     <Target Name="RestoreNow" BeforeTargets="BeforeBuild" Condition="'$(RestoreNow)' == 'true'">
         <Message Importance="high" Text="Restoring now" />
         <Exec Command="dotnet restore" />
+    </Target>
+
+    <Target Name="CopyTemplateGenerator" BeforeTargets="BeforeBuild" Condition="!Exists('ContentPathGenerator.tt')">
+        <Message Importance="high" Text="Copy ContentPathGenerator.tt" />
+        <Copy SourceFiles="..\Nez\T4Templates\ContentPathGenerator.tt" DestinationFiles="ContentPathGenerator.tt" />
     </Target>
     
 </Project>

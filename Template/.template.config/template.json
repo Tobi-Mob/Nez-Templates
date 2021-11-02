@@ -1,0 +1,48 @@
+{
+    "$schema": "http://json.schemastore.org/template",
+    "author": "Tobi-Mob",
+    "name": "Nez FNA Template",
+    "identity": "Nez.FNA.Template",
+    "shortName": "Nez.FNA",
+    "sourceName": "ProjectTemplate",
+    "primaryOutputs": [
+        {
+            "path": "ProjectTemplate.sln"
+        }
+    ],
+    "postActions": [
+        {
+            "condition": "(OS != \"Windows_NT\")",
+            "actionId": "3A7C4B45-1F5D-4A30-959A-51B88E82B5D2",
+            "args": {
+                "executable": "bash",
+                "args": "build.sh",
+                "redirectStandardError": "false",
+                "redirectStandardOutput": "false"                
+            },
+            "manualInstructions": [
+                {
+                    "text": "Run 'build.sh'"
+                }
+            ],
+            "continueOnError": false,
+            "description ": "setups the project by calling build.sh"
+        },
+        {
+            "condition": "(OS == \"Windows_NT\")",
+            "actionId": "3A7C4B45-1F5D-4A30-959A-51B88E82B5D2",
+            "args": {
+                "executable": "build.cmd",
+                "redirectStandardError": "false",
+                "redirectStandardOutput": "false"
+            },
+            "manualInstructions": [
+                {
+                    "text": "Run 'build.cmd'"
+                }
+            ],
+            "continueOnError": false,
+            "description ": "setups the project by calling build.cmd"
+        }             
+    ]
+}

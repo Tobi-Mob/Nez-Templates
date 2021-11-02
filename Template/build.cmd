@@ -1,0 +1,2 @@
+cd ProjectTemplate
+msbuild
