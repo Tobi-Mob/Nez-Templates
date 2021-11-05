@@ -1,0 +1,56 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <ItemGroup>
+        <None Include="..\fnalibs\*\*.*">
+            <Visible>false</Visible>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Include="..\fnalibs\x64\*.*" Condition="'$(IsWindows)' == 'false'">
+            <Visible>false</Visible>
+            <Link>%(Filename)%(Extension)</Link>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+    
+    <Target Name="CheckOutNez" BeforeTargets="BeforeBuild" Condition="!Exists('..\Nez\')">
+        <Message Importance="high" Text="Cloning Nez" />
+        <Exec Command="git clone https://github.com/prime31/Nez.git ../Nez" />
+        <PropertyGroup>
+            <RestoreNow>true</RestoreNow>
+        </PropertyGroup>
+    </Target>
+
+    <Target Name="CheckOutFna" BeforeTargets="BeforeBuild" Condition="!Exists('..\FNA\')">
+        <Message Importance="high" Text="Cloning FNA" />
+        <Exec Command="git clone --recursive git://github.com/FNA-XNA/FNA.git ../FNA" />
+        <PropertyGroup>
+            <RestoreNow>true</RestoreNow>
+        </PropertyGroup>
+    </Target>
+
+    <Target Name="DownloadFnalibs" BeforeTargets="BeforeBuild" Condition="!Exists('..\fnalibs\') AND '$(IsLinux)' == 'true'">
+        <Message Importance="high" Text="Downloading fnalibs" />
+        <Exec Command="wget https://fna.flibitijibibo.com/archive/fnalibs.tar.bz2 -P .." />
+        <Exec Command="mkdir -p ../fnalibs" />
+        <Exec Command="tar xjC ../fnalibs -f ../fnalibs.tar.bz2" />
+        <Exec Command="rm ../fnalibs.tar.bz2" />
+    </Target>
+
+    <Target Name="DownloadFnalibs_Win" BeforeTargets="BeforeBuild" Condition="!Exists('..\fnalibs\') AND '$(IsWindows)' == 'true'">
+        <Message Importance="high" Text="Downloading fnalibs" />
+        <Exec Command="powershell -Command &quot;Invoke-WebRequest https://fna.flibitijibibo.com/archive/fnalibs.tar.bz2 -OutFile ../fnalibs.tar.bz2" />
+        <Exec Command="mkdir ../fnalibs" />
+
+        <Error Condition="!Exists('C:\Program Files\7-Zip\7z.exe')" Text="Unable to extract fnalibs.tar.bz2: 'C:\Program Files\7-Zip\7z.exe' not found." />
+
+        <Exec Command="C:\Program Files\7-Zip\7z.exe&quot; x &quot;../fnalibs.tar.bz2&quot;" />
+        <Exec Command="C:\Program Files\7-Zip\7z.exe&quot; x &quot;../fnalibs.tar&quot; -o ../fnalibs" />
+        <Exec Command="rm ../fnalibs.tar.bz2" />
+        <Exec Command="rm ../fnalibs.tar" />
+    </Target>
+
+    <Target Name="RestoreNow" BeforeTargets="BeforeBuild" Condition="'$(RestoreNow)' == 'true'">
+        <Message Importance="high" Text="Restoring now" />
+        <Exec Command="dotnet restore" />
+    </Target>
+</Project>

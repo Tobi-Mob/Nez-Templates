@@ -7,6 +7,14 @@
         <PlatformTarget>AnyCPU</PlatformTarget>
         <MonoGamePlatform>DesktopGL</MonoGamePlatform>
     </PropertyGroup>
+
+    <PropertyGroup>
+        <IsWindows Condition="'$(OS)' == 'Windows_NT'">true</IsWindows>
+        <IsOSX Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::OSX)))' == 'true'">true</IsOSX>
+        <IsLinux Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))' == 'true'">true</IsLinux>
+    </PropertyGroup>
+
+    <Import Project="BuildTargets\FNA.targets" />
     
     <PropertyGroup>
         <NezRoot>..\Nez</NezRoot>
@@ -48,12 +56,6 @@
         <DependentUpon>ContentPathGenerator.tt</DependentUpon>
       </Compile>
     </ItemGroup>
-
-    <PropertyGroup>
-        <IsWindows Condition="'$(OS)' == 'Windows_NT'">true</IsWindows>
-        <IsOSX Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::OSX)))' == 'true'">true</IsOSX>
-        <IsLinux Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))' == 'true'">true</IsLinux>
-    </PropertyGroup>
     
     <Target Name="CheckOutNez" BeforeTargets="BeforeBuild" Condition="!Exists('..\Nez\')">
         <Message Importance="high" Text="Cloning Nez" />
