@@ -27,10 +27,6 @@
         <ProjectReference Include="..\Nez\Nez.Persistence\Nez.FNA.Persistence.csproj" />
         <ProjectReference Include="..\Nez\Nez.Portable\Nez.FNA.csproj" />
     </ItemGroup>
-
-    <ItemGroup>
-        <PackageReference Include="System.Drawing.Common" Version="4.6.0" />
-    </ItemGroup>
     
     <ItemGroup>
         <None Include="..\fnalibs\*\*.*">
