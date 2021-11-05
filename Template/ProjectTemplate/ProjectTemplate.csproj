@@ -27,12 +27,20 @@
         <ProjectReference Include="..\Nez\Nez.Persistence\Nez.FNA.Persistence.csproj" />
         <ProjectReference Include="..\Nez\Nez.Portable\Nez.FNA.csproj" />
     </ItemGroup>
-    
+
     <ItemGroup>
         <None Include="..\fnalibs\*\*.*">
             <Visible>false</Visible>
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
+        <None Include="..\fnalibs\x64\*.*" Condition="'$(IsWindows)' == 'false'">
+            <Visible>false</Visible>
+            <Link>%(Filename)%(Extension)</Link>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+    
+    <ItemGroup>
         <None Update="ContentPathGenerator.tt">
           <Generator>TextTemplatingFileGenerator</Generator>
           <LastGenOutput>ContentPathGenerator.cs</LastGenOutput>

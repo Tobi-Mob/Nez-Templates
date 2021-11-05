@@ -1,16 +1,4 @@
 <Project>
-
-    <ItemGroup>
-        <None Include="..\fnalibs\*\*.*">
-            <Visible>false</Visible>
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </None>
-        <None Include="..\fnalibs\x64\*.*" Condition="'$(IsWindows)' == 'false'">
-            <Visible>false</Visible>
-            <Link>%(Filename)%(Extension)</Link>
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </None>
-    </ItemGroup>
     
     <Target Name="CheckOutNez" BeforeTargets="BeforeBuild" Condition="!Exists('..\Nez\')">
         <Message Importance="high" Text="Cloning Nez" />
