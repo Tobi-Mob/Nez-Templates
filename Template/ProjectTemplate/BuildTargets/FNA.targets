@@ -20,7 +20,7 @@
         </PropertyGroup>
     </Target>
 
-    <Target Name="DownloadFnalibs" BeforeTargets="BeforeBuild" Condition="!Exists('..\fnalibs\') AND '$(IsWindows)' != 'true''">
+    <Target Name="DownloadFnalibs" BeforeTargets="BeforeBuild" Condition="!Exists('..\fnalibs\') AND '$(IsWindows)' != 'true'">
         <Message Importance="high" Text="Downloading fnalibs" />
         <Exec Command="wget https://fna.flibitijibibo.com/archive/fnalibs.tar.bz2 -P .." />
         <Exec Command="mkdir -p ../fnalibs" />

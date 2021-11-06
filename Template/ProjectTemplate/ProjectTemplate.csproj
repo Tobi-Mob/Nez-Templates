@@ -19,16 +19,21 @@
     <!-- project references -->
     <ItemGroup>
         <ProjectReference Include="..\FNA\FNA.csproj" />
-        <ProjectReference Include="..\Nez\Nez.ImGui\Nez.FNA.ImGui.csproj" />
-        <ProjectReference Include="..\Nez\Nez.Persistence\Nez.FNA.Persistence.csproj" />
         <ProjectReference Include="..\Nez\Nez.Portable\Nez.FNA.csproj" />
+        <!-- Add your required references
+        <ProjectReference Include="..\Nez\Nez.Persistence\Nez.FNA.Persistence.csproj" />
+        <ProjectReference Include="..\Nez\Nez.FarseerPhysics\Nez.FNA.FarseerPhysics.csproj" />
+        <ProjectReference Include="..\Nez\Nez.ImGui\Nez.FNA.ImGui.csproj" />
+         -->
     </ItemGroup>
 
+    <!-- Copy Content folder to the output directory -->
     <ItemGroup>
         <Content Include="Content/**/*.*">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
     </ItemGroup>
+    
     
     <ItemGroup>
         <None Update="ContentPathGenerator.tt">
@@ -45,7 +50,11 @@
       </Compile>
     </ItemGroup>
     
-    <Target Name="RestoreNow" BeforeTargets="BeforeBuild" Condition="'$(RestoreNow)' == 'true'">
+    <!-- 
+    There are known situations that cause the build to fail without a dotnet restore.
+    If we encounter a known situation, just do a dotnet restore automatically
+     -->
+    <Target Name="RestoreNow" AfterTargets="BeforeBuild" Condition="'$(RestoreNow)' == 'true'">
         <Message Importance="high" Text="Restoring now" />
         <Exec Command="dotnet restore" />
     </Target>
