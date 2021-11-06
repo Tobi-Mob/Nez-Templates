@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net471</TargetFramework>
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <MonoGamePlatform>DesktopGL</MonoGamePlatform>
+    </PropertyGroup>
+    
+    <Import Project="BuildTargets\Nez.targets" />
+    <Import Project="BuildTargets\FNA.targets" />
+    
+    <!-- project references -->
+    <ItemGroup>
+        <ProjectReference Include="..\FNA\FNA.csproj" />
+        <ProjectReference Include="..\Nez\Nez.Portable\Nez.FNA.csproj" />
+        <!-- Add your required references
+        <ProjectReference Include="..\Nez\Nez.Persistence\Nez.FNA.Persistence.csproj" />
+        <ProjectReference Include="..\Nez\Nez.FarseerPhysics\Nez.FNA.FarseerPhysics.csproj" />
+        <ProjectReference Include="..\Nez\Nez.ImGui\Nez.FNA.ImGui.csproj" />
+         -->
+    </ItemGroup>
+
+
+    
+</Project>

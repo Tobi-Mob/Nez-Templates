@@ -1,4 +1,10 @@
 <Project>
+
+    <PropertyGroup>
+        <IsWindows Condition="'$(OS)' == 'Windows_NT'">true</IsWindows>
+        <IsOSX Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::OSX)))' == 'true'">true</IsOSX>
+        <IsLinux Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))' == 'true'">true</IsLinux>
+    </PropertyGroup>
     
     <Target Name="CheckOutNez" BeforeTargets="BeforeBuild" Condition="!Exists('..\Nez\')">
         <Message Importance="high" Text="Cloning Nez" />
@@ -11,5 +17,37 @@
     <Target Name="CopyTemplateGenerator" BeforeTargets="BeforeBuild" Condition="!Exists('ContentPathGenerator.tt')">
         <Message Importance="high" Text="Copy ContentPathGenerator.tt" />
         <Copy SourceFiles="..\Nez\T4Templates\ContentPathGenerator.tt" DestinationFiles="ContentPathGenerator.tt" />
+    </Target>
+
+    <!-- Copy Content folder to the output directory -->
+    <ItemGroup>
+        <Content Include="Content/**/*.*">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
+
+    <!-- ContentPathGenerator.tt and .cs definition -->
+    <ItemGroup>
+        <None Update="ContentPathGenerator.tt">
+            <Generator>TextTemplatingFileGenerator</Generator>
+            <LastGenOutput>ContentPathGenerator.cs</LastGenOutput>
+        </None>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Compile Update="ContentPathGenerator.cs">
+            <AutoGen>True</AutoGen>
+            <DesignTime>True</DesignTime>
+            <DependentUpon>ContentPathGenerator.tt</DependentUpon>
+        </Compile>
+    </ItemGroup>
+
+    <!-- 
+    There are known situations that cause the build to fail without a dotnet restore.
+    If we encounter a known situation, just do a dotnet restore automatically
+     -->
+    <Target Name="RestoreNow" AfterTargets="BeforeBuild" Condition="'$(RestoreNow)' == 'true'">
+        <Message Importance="high" Text="Restoring now" />
+        <Exec Command="dotnet restore" />
     </Target>
 </Project>
