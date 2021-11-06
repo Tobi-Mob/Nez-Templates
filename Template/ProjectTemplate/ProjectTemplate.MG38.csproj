@@ -11,8 +11,7 @@
 	<ItemGroup>
 		<TrimmerRootAssembly Include="Microsoft.Xna.Framework.Content.ContentTypeReader" Visible="false" />
 	</ItemGroup>
-   
-    <Import Project="BuildTargets\Common.targets" />
+	
     <Import Project="BuildTargets\Nez.targets" />
     
     <!-- project references -->
