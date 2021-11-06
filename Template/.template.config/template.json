@@ -1,15 +1,56 @@
 {
     "$schema": "http://json.schemastore.org/template",
     "author": "Tobi-Mob",
-    "name": "Nez FNA Template",
-    "identity": "Nez.FNA.Template",
-    "shortName": "Nez.FNA",
+    "name": "Nez Game",
+    "identity": "nez",
+    "shortName": "nez",
     "sourceName": "ProjectTemplate",
-    "primaryOutputs": [
-        {
-            "path": "ProjectTemplate.sln"
+    "tags": {
+        "language": "C#",
+        "type": "solution"
+    },
+    
+    "symbols": {
+        "framework": {
+            "type": "parameter",
+            "datatype": "choice",
+            "defaultValue": "FNA",
+            "isRequired": false,
+            "description": "Framework to use",
+            "choices": [
+                {
+                    "choice": "FNA",
+                    "description": "FNA"
+                },
+                {
+                    "choice": "MG38",
+                    "description": "Monogame 3.8"
+                }
+            ]
         }
-    ],
+    },
+    "sources": [
+        {
+            "modifiers": [
+                {
+                    "condition": "(framework != 'FNA')",
+                    "exclude": [
+                        "ProjectTemplate/BuildTargets/FNA.targets",
+                        "ProjectTemplate/ProjectTemplate.FNA.csproj",
+                        "ProjectTemplate.FNA.sln"
+                    ]
+                },
+                {
+                    "condition": "(framework != 'MG38')",
+                    "exclude": [
+                        "ProjectTemplate/ProjectTemplate.MG38.csproj",
+                        "ProjectTemplate.MG38.sln"
+                    ]    
+                }
+            ]
+        }
+    ],    
+    
     "postActions": [
         {
             "condition": "(OS != \"Windows_NT\")",
