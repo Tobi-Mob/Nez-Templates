@@ -1,0 +1,2 @@
+cd ProjectTemplate
+dotnet build

@@ -6,6 +6,7 @@
         <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
         <PlatformTarget>AnyCPU</PlatformTarget>
         <MonoGamePlatform>DesktopGL</MonoGamePlatform>
+        <DefineConstants>$(DefineConstants);FNA</DefineConstants>
     </PropertyGroup>
     
     <Import Project="BuildTargets\Nez.targets" />

@@ -6,6 +6,7 @@
 	    <PublishReadyToRun>false</PublishReadyToRun>
 	    <TieredCompilation>false</TieredCompilation>
 		<GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
+		<DefineConstants>$(DefineConstants);MG38;MG</DefineConstants>
 	</PropertyGroup>
 	
 	<ItemGroup>

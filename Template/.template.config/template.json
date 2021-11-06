@@ -37,14 +37,19 @@
                     "exclude": [
                         "ProjectTemplate/BuildTargets/FNA.targets",
                         "ProjectTemplate/ProjectTemplate.FNA.csproj",
-                        "ProjectTemplate.FNA.sln"
+                        "ProjectTemplate.FNA.sln",
+                        "ProjectTemplate/Properties/launchSettings.json",
+                        "msbuild.cmd",
+                        "msbuild.sh"
                     ]
                 },
                 {
                     "condition": "(framework != 'MG38')",
                     "exclude": [
                         "ProjectTemplate/ProjectTemplate.MG38.csproj",
-                        "ProjectTemplate.MG38.sln"
+                        "ProjectTemplate.MG38.sln",
+                        "dotnet_build.cmd",
+                        "dotnet_build.sh"
                     ]    
                 }
             ]
@@ -53,37 +58,74 @@
     
     "postActions": [
         {
-            "condition": "(OS != \"Windows_NT\")",
+            "condition": "(OS != \"Windows_NT\" && framework == 'FNA')",
             "actionId": "3A7C4B45-1F5D-4A30-959A-51B88E82B5D2",
             "args": {
+                "description": "setups the project by calling msbuild",
                 "executable": "bash",
-                "args": "build.sh",
+                "args": "msbuild.sh",
                 "redirectStandardError": "false",
                 "redirectStandardOutput": "false"                
             },
             "manualInstructions": [
                 {
-                    "text": "Run 'build.sh'"
+                    "text": "Run 'msbuild.sh'"
                 }
             ],
             "continueOnError": false,
-            "description ": "setups the project by calling build.sh"
+            "description ": "setups the project by calling msbuild.sh"
         },
         {
-            "condition": "(OS == \"Windows_NT\")",
+            "condition": "(OS == \"Windows_NT\" && framework == 'FNA')",
             "actionId": "3A7C4B45-1F5D-4A30-959A-51B88E82B5D2",
             "args": {
-                "executable": "build.cmd",
+                "description": "setups the project by calling msbuild",
+                "executable": "msbuild.cmd",
                 "redirectStandardError": "false",
                 "redirectStandardOutput": "false"
             },
             "manualInstructions": [
                 {
-                    "text": "Run 'build.cmd'"
+                    "text": "Run 'msbuild.cmd'"
                 }
             ],
             "continueOnError": false,
-            "description ": "setups the project by calling build.cmd"
-        }             
+            "description ": "setups the project by calling msbuild.cmd"
+        },
+        {
+            "condition": "(OS != \"Windows_NT\" && framework == 'MG38')",
+            "actionId": "3A7C4B45-1F5D-4A30-959A-51B88E82B5D2",
+            "args": {
+                "description": "setups the project by calling dotnet build",
+                "executable": "bash",
+                "args": "dotnet_build.sh",
+                "redirectStandardError": "false",
+                "redirectStandardOutput": "false"
+            },
+            "manualInstructions": [
+                {
+                    "text": "Run 'dotnet_build.sh'"
+                }
+            ],
+            "continueOnError": false,
+            "description ": "setups the project by calling dotnet_build.sh"
+        },
+        {
+            "condition": "(OS == \"Windows_NT\" && framework == 'MG38')",
+            "actionId": "3A7C4B45-1F5D-4A30-959A-51B88E82B5D2",
+            "args": {
+                "description": "setups the project by calling dotnet build",
+                "executable": "dotnet_build.cmd",
+                "redirectStandardError": "false",
+                "redirectStandardOutput": "false"
+            },
+            "manualInstructions": [
+                {
+                    "text": "Run 'dotnet_build.cmd'"
+                }
+            ],
+            "continueOnError": false,
+            "description ": "setups the project by calling dotnet_build.cmd"
+        }
     ]
 }
