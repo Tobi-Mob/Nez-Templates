@@ -2,7 +2,6 @@ using System.Runtime.InteropServices;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Nez;
-using Nez.ImGuiTools;
 using Nez.Sprites;
 
 namespace ProjectTemplate
