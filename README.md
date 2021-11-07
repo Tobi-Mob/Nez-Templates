@@ -7,7 +7,7 @@ Documentation on manual setup and prerequisites can be found in the official rep
 - [Nez Repository](https://github.com/prime31/Nez#setup)
 - [FNA Documentation](https://github.com/FNA-XNA/FNA/wiki/1:-Download-and-Update-FNA)
 
-##How to install ##
+## How to install ##
 
 ```
 git clone https://github.com/Tobi-Mob/Nez-Templates.git -depth 1
