@@ -14,7 +14,7 @@
 
     <Target Name="CheckOutFna" BeforeTargets="BeforeBuild" Condition="!Exists('..\FNA\')">
         <Message Importance="high" Text="Cloning FNA" />
-        <Exec Command="git clone --recursive git://github.com/FNA-XNA/FNA.git ../FNA" />
+        <Exec Command="git clone --depth 1 --recursive git://github.com/FNA-XNA/FNA.git ../FNA" />
         <PropertyGroup>
             <RestoreNow>true</RestoreNow>
         </PropertyGroup>

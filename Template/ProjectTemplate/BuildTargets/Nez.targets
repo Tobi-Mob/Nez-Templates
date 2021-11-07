@@ -8,7 +8,7 @@
     
     <Target Name="CheckOutNez" BeforeTargets="BeforeBuild" Condition="!Exists('..\Nez\')">
         <Message Importance="high" Text="Cloning Nez" />
-        <Exec Command="git clone https://github.com/prime31/Nez.git ../Nez" />
+        <Exec Command="git clone --depth 1 https://github.com/prime31/Nez.git ../Nez" />
         <PropertyGroup>
             <RestoreNow>true</RestoreNow>
         </PropertyGroup>
