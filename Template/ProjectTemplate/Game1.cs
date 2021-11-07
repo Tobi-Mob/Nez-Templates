@@ -23,6 +23,7 @@ namespace ProjectTemplate
 #endif
 //-:cnd:noEmit
 #if NEZ
+            // If you observe render artifacts, try switching this flag.
             Batcher.UseFnaHalfPixelMatrix = true;
 #endif
 //+:cnd:noEmit
