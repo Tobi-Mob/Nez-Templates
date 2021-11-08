@@ -22,7 +22,7 @@ namespace ProjectTemplate
 //https://github.com/dotnet/templating/issues/3085#issuecomment-838435886
 #endif
 //-:cnd:noEmit
-#if NEZ
+#if FNA
             // If you observe render artifacts, try switching this flag.
             Batcher.UseFnaHalfPixelMatrix = true;
 #endif
